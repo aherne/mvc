@@ -12,7 +12,6 @@ use Lucinda\MVC\Response\Exception as ResponseException;
 class Response
 {
     protected ?string $body = null;
-    protected ?View $view = null;
 
     /**
      * Sets response body
@@ -24,9 +23,9 @@ class Response
         $this->body = $body;
     }
     
-    public function setView(View $view): void
+    public function getBody(): ?string
     {
-        $this->view = $view;
+        return $this->body;
     }
     
     public function isAlreadyGenerated(): bool
@@ -34,16 +33,12 @@ class Response
         return $this->body?true:false;
     }
     
-    public function resolve(ViewResolver $resolver): void
+    public function resolve(View $view, ViewResolver $resolver): void
     {
-        if (!$this->view) {
-            throw new ResponseException("View not set, therefore there is nothing to resolve");
-        }
         if ($this->body) {
             throw new ResponseException("Response output stream has already been written to");
         }
-        $this->body = $resolver->resolve($this->view);
-        $this->view = null; // force conformity
+        $this->body = $resolver->resolve($view);
     }
 
     /**
