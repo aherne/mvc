@@ -77,7 +77,7 @@ class Application
     protected function setRoutes(): void
     {
         $list = new RoutesList();
-        $this->formats = $list->convert($this->reader->getTag("routes"));
+        $this->routes = $list->convert($this->reader->getTag("routes"));
     }
 
     /**
