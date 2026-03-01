@@ -7,7 +7,7 @@ namespace Lucinda\MVC\Response;
  */
 class View
 {
-    private string $file;
+    private string $file = "";
     /**
      * @var array<int|string,mixed>
      */
