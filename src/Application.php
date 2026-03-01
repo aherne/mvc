@@ -2,224 +2,92 @@
 
 namespace Lucinda\MVC;
 
-use Lucinda\MVC\Application\Format;
-use Lucinda\MVC\Application\Route;
+use Lucinda\MVC\XmlReader\Exception as XmlException;
+use Lucinda\MVC\FacetsLists\ResolversList;
+use Lucinda\MVC\FacetsLists\RoutesList;
+use Lucinda\MVC\Facets\ApplicationInfo;
+use Lucinda\MVC\Facets\ResolverInfo;
+use Lucinda\MVC\Facets\RouteInfo;
 
 /**
  * Detects settings necessary to configure MVC API based on contents of XML file
  */
 class Application
 {
-    protected \SimpleXMLElement $simpleXMLElement;
-
-    protected string $viewsPath;
-
-    protected string $defaultFormat;
-    protected string $defaultRoute;
-
-    protected string $version;
-
+    protected XmlReader $reader;
+    
+    protected ApplicationInfo $applicationInfo;
     /**
      * @var array<string,Route>
      */
     protected array $routes=array();
     /**
-     * @var array<string,Format>
+     * @var array<string,ResolverInfo>
      */
     protected array $formats=array();
-    /**
-     * @var array<string,\SimpleXMLElement>
-     */
-    protected array $objectsCache=array();
-
-    /**
-     * Reads XML supplied
-     *
-     * @param  string $xmlFilePath Relative location of XML file containing settings.
-     * @throws ConfigurationException If XML is misconfigured.
-     */
-    protected function readXML(string $xmlFilePath): void
+    
+    
+    public function __construct(string $xmlFilePath)
     {
-        if (!file_exists($xmlFilePath)) {
-            throw new ConfigurationException("XML file not found: ".$xmlFilePath);
-        }
-        $this->simpleXMLElement = simplexml_load_file($xmlFilePath);
+        $this->reader = new XmlReader($xmlFilePath);
+        $this->setApplicationInfo();
+        $this->setResolvers();
+        $this->setRoutes();
+        
     }
-
-    /**
-     * Sets basic application info based on contents of "application" XML tag:
-     *
-     * @throws ConfigurationException If xml content has failed validation.
-     */
+    
     protected function setApplicationInfo(): void
     {
-        $xml = $this->getTag("application");
-        if (empty($xml)) {
-            throw new ConfigurationException("Tag is mandatory: application");
-        }
-
-        $this->defaultFormat = (string) $xml["default_format"];
-        if (!$this->defaultFormat) {
-            throw new ConfigurationException("Attribute 'default_format' is mandatory for 'application' tag");
-        }
-
-        $this->defaultRoute = (string) $xml["default_route"];
-        if (!$this->defaultRoute) {
-            throw new ConfigurationException("Attribute 'default_route' is mandatory for 'application' tag");
-        }
-
-        $this->viewsPath = (string) $xml->paths["views"];
-        $this->version = (string) $xml["version"];
+        $this->applicationInfo = new ApplicationInfo($this->reader->getTag("application"));
     }
-
-    /**
-     * Gets default response display format
-     *
-     * @return string
-     */
-    public function getDefaultFormat(): string
+    
+    public function getApplicationInfo(): ApplicationInfo
     {
-        return $this->defaultFormat;
+        return $this->applicationInfo;
     }
-
-    /**
-     * Gets default route id
-     *
-     * @return string
-     */
-    public function getDefaultRoute(): string
-    {
-        return $this->defaultRoute;
-    }
-
-    /**
-     * Gets path to views folder.
-     *
-     * @return string
-     */
-    public function getViewsPath(): string
-    {
-        return $this->viewsPath;
-    }
-
-    /**
-     * Gets application version.
-     *
-     * @return string
-     */
-    public function getVersion(): string
-    {
-        return $this->version;
-    }
+    
 
     /**
      * Sets view resolvers info based on contents of "resolvers" XML tag
      *
-     * @throws ConfigurationException If xml content has failed validation.
+     * @throws XmlException If xml content has failed validation.
      */
     protected function setResolvers(): void
     {
-        $xml = $this->getTag("resolvers");
-        if (empty($xml)) {
-            throw new ConfigurationException("Tag is required: resolvers");
-        }
-        $list = $xml->xpath("resolver");
-        foreach ($list as $info) {
-            $name = (string) $info["format"];
-            if (!$name) {
-                throw new ConfigurationException("Attribute 'format' is mandatory for 'resolver' tag");
-            }
-            $this->formats[$name] = new Format($info);
-        }
-        if (empty($this->formats)) {
-            throw new ConfigurationException("Tag is empty: resolvers");
-        }
+        $list = new ResolversList();
+        $this->formats = $list->convert($this->reader->getTag("resolvers"));
     }
 
     /**
      * Gets content of tag resolver encapsulated as Format objects
      *
-     * @param  string $displayFormat
-     * @return Format|array<string, Format>|null
+     * @param string $format
+     * @return ResolverInfo|NULL
      */
-    public function resolvers(string $displayFormat=""): Format|array|null
+    public function getResolvers(string $format): ?ResolverInfo
     {
-        if (!$displayFormat) {
-            return $this->formats;
-        } else {
-            return ($this->formats[$displayFormat] ?? null);
-        }
+        return $this->formats[$format]??null;
     }
 
     /**
      * Sets routes info based on contents of "routes" XML tag
      *
-     * @throws ConfigurationException If xml content has failed validation.
+     * @throws XmlException If xml content has failed validation.
      */
     protected function setRoutes(): void
     {
-        $xml = $this->getTag("routes");
-        $list = $xml->xpath("route");
-        foreach ($list as $info) {
-            $id = (string) $info['id'];
-            if (!$id) {
-                throw new ConfigurationException("Route missing 'id' attribute!");
-            }
-            $this->routes[$id] = new Route($info);
-        }
+        $list = new RoutesList();
+        $this->formats = $list->convert($this->reader->getTag("routes"));
     }
 
     /**
      * Reads content of tag routes encapsulated as Route objects
      *
-     * @param  string $id
-     * @return Route|array<string, Route>|null
+     * @param string $id
+     * @return RouteInfo|NULL
      */
-    public function routes(string $id=""): Route|array|null
+    public function getRoutes(string $id): ?RouteInfo
     {
-        if (!$id) {
-            return $this->routes;
-        } else {
-            return ($this->routes[$id] ?? null);
-        }
-    }
-
-    /**
-     * Gets tag based on name from main XML root or referenced XML file if "ref" attribute was set
-     *
-     * @param  string $name
-     * @return \SimpleXMLElement
-     * @throws ConfigurationException If XML is misconfigured.
-     */
-    public function getTag(string $name): \SimpleXMLElement
-    {
-        $xml = $this->simpleXMLElement->{$name};
-        $xmlFilePath = (string) $xml["ref"];
-        if ($xmlFilePath) {
-            if (isset($this->objectsCache[$name])) {
-                return $this->objectsCache[$name];
-            } else {
-                $xmlFilePath = $xmlFilePath.".xml";
-                if (!file_exists($xmlFilePath)) {
-                    throw new ConfigurationException("XML file not found: ".$xmlFilePath);
-                }
-                $subXML = simplexml_load_file($xmlFilePath);
-                $returningXML = $subXML->{$name};
-                $this->objectsCache[$name] = $returningXML;
-                return $returningXML;
-            }
-        } else {
-            return $xml;
-        }
-    }
-
-    /**
-     * Gets root XML tag
-     *
-     * @return \SimpleXMLElement
-     */
-    public function getXML(): \SimpleXMLElement
-    {
-        return $this->simpleXMLElement;
+        return $this->routes[$id]??null;
     }
 }

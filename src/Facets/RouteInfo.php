@@ -1,30 +1,31 @@
 <?php
+namespace Lucinda\MVC\Facets;
 
-namespace Lucinda\MVC\Application;
+use Lucinda\MVC\XmlReader\Element;
+use Lucinda\MVC\XmlReader\Exception;
 
-/**
- * Encapsulates an abstract route
- */
-class Route
+class RouteInfo
 {
     private string $id;
     private string $controller;
     private string $view;
     private string $format;
-
-    /**
-     * Detects route info from <exception> tag
-     *
-     * @param \SimpleXMLElement $info
-     */
-    public function __construct(\SimpleXMLElement $info)
+    
+    public function __construct(Element $element)
     {
-        $this->id = (string) $info["id"];
-        $this->controller = (string) $info["controller"];
-        $this->view = (string) $info["view"];
-        $this->format = (string) $info["format"];
+        $attributes = $element->getAttributes();
+        if (empty($attributes["id"])) {
+            throw new Exception("Attribute 'id' is mandatory for '".$element->getName()."' tag");
+        }
+        if (empty($attributes["controller"]) && empty($attributes["view"])) {
+            throw new Exception("Attribute 'controller' or 'view' is mandatory for '".$element->getName()."' tag");
+        }
+        $this->id = $attributes["id"];
+        $this->controller = $attributes["controller"]??"";
+        $this->view = $attributes["view"]??"";
+        $this->format = $attributes["format"]??"";
     }
-
+    
     /**
      * Gets route unique identifier (eg: url)
      *
@@ -34,7 +35,7 @@ class Route
     {
         return $this->id;
     }
-
+    
     /**
      * Gets controller class name that handles exception handled.
      *
