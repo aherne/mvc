@@ -39,6 +39,7 @@ class Response
             throw new ResponseException("Response output stream has already been written to");
         }
         $this->body = $resolver->resolve($view);
+        unset($view); // destroys view, to prevent wrong reuse
     }
 
     /**
