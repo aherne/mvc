@@ -90,4 +90,9 @@ class Application
     {
         return $this->routes[$id]??null;
     }
+    
+    public function getReader(): XmlReader
+    {
+        return $this->reader;
+    }
 }
