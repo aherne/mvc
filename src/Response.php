@@ -5,6 +5,7 @@ namespace Lucinda\MVC;
 use Lucinda\MVC\Response\View;
 use Lucinda\MVC\Response\ViewResolver;
 use Lucinda\MVC\Response\Exception as ResponseException;
+use Lucinda\MVC\Response\Transformer as ResponseTransformer;
 
 /**
  * Compiles information about response
@@ -23,12 +24,7 @@ class Response
         $this->body = $body;
     }
     
-    public function getBody(): ?string
-    {
-        return $this->body;
-    }
-    
-    public function isAlreadyGenerated(): bool
+    public function isAlreadyComposed(): bool
     {
         return $this->body?true:false;
     }
@@ -39,7 +35,14 @@ class Response
             throw new ResponseException("Response output stream has already been written to");
         }
         $this->body = $resolver->resolve($view);
-        unset($view); // destroys view, to prevent wrong reuse
+    }
+    
+    public function transform(ResponseTransformer $transformer): void
+    {
+        if (!$this->body) {
+            throw new ResponseException("Response output stream has not been written to");
+        }
+        $this->body = $transformer->transform($this->body);
     }
 
     /**
