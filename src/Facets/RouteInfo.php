@@ -6,24 +6,35 @@ use Lucinda\MVC\XmlReader\Exception;
 
 class RouteInfo
 {
-    private string $id;
-    private string $controller;
-    private string $view;
-    private string $format;
+    protected string $id;
+    protected string $controller;
+    protected string $view;
+    protected string $format;
     
     public function __construct(Element $element)
     {
         $attributes = $element->getAttributes();
-        if (empty($attributes["id"])) {
-            throw new Exception("Attribute 'id' is mandatory for '".$element->getName()."' tag");
+        $this->setID($attributes);
+        $this->setFormat($attributes);
+        $this->setController($attributes);
+        $this->setView($attributes);
+        if (!$this->controller && !$this->view) {
+            throw new Exception("Attribute 'controller' or 'view' is mandatory for 'route' tag");
         }
-        if (empty($attributes["controller"]) && empty($attributes["view"])) {
-            throw new Exception("Attribute 'controller' or 'view' is mandatory for '".$element->getName()."' tag");
+    }
+
+    /**
+     * Sets route id
+     * 
+     * @param array<string,string> $attributes
+     * @throws Exception If XML is misconfigured.
+     */
+    protected function setID(array $attributes): void
+    {
+        if (empty($attributes["id"])) {
+            throw new Exception("Attribute 'id' is mandatory for 'route' tag");
         }
         $this->id = $attributes["id"];
-        $this->controller = $attributes["controller"]??"";
-        $this->view = $attributes["view"]??"";
-        $this->format = $attributes["format"]??"";
     }
     
     /**
@@ -35,7 +46,17 @@ class RouteInfo
     {
         return $this->id;
     }
-    
+
+    /**
+     * Sets controller
+     * 
+     * @param array<string,string> $attributes
+     */
+    protected function setController(array $attributes): void
+    {
+        $this->controller = $attributes["controller"]??"";
+    }
+
     /**
      * Gets controller class name that handles exception handled.
      *
@@ -47,6 +68,16 @@ class RouteInfo
     }
 
     /**
+     * Sets view
+     * 
+     * @param array<string,string> $attributes
+     */
+    protected function setView(array $attributes): void
+    {
+        $this->view = $attributes["view"]??"";
+    }
+
+    /**
      * Gets file that holds what is displayed when error response is rendered.
      *
      * @return string
@@ -54,6 +85,16 @@ class RouteInfo
     public function getView(): string
     {
         return $this->view;
+    }
+
+    /**
+     * Sets response format
+     * 
+     * @param array<string,string> $attributes
+     */
+    protected function setFormat(array $attributes): void
+    {
+        $this->format = $attributes["format"]??"";
     }
 
     /**

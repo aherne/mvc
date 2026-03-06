@@ -18,7 +18,7 @@ class Application
     
     protected ApplicationInfo $applicationInfo;
     /**
-     * @var array<string,Route>
+     * @var array<string,RouteInfo>
      */
     protected array $routes=array();
     /**
@@ -36,11 +36,19 @@ class Application
         
     }
     
+    /**
+     * Sets information about application based on contents of "application" XML tag
+     * 
+     * @throws XmlException If xml content has failed validation.
+     */
     protected function setApplicationInfo(): void
     {
         $this->applicationInfo = new ApplicationInfo($this->reader->getTag("application"));
     }
     
+    /**
+     * Gets information about application
+     */
     public function getApplicationInfo(): ApplicationInfo
     {
         return $this->applicationInfo;
@@ -54,7 +62,7 @@ class Application
      */
     protected function setResolvers(): void
     {
-        $list = new ResolversList();
+        $list = new ResolversList(ResolverInfo::class);
         $this->formats = $list->convert($this->reader->getTag("resolvers"));
     }
 
@@ -76,7 +84,7 @@ class Application
      */
     protected function setRoutes(): void
     {
-        $list = new RoutesList();
+        $list = new RoutesList(RouteInfo::class);
         $this->routes = $list->convert($this->reader->getTag("routes"));
     }
 
@@ -89,10 +97,5 @@ class Application
     public function getRoutes(string $id): ?RouteInfo
     {
         return $this->routes[$id]??null;
-    }
-    
-    public function getReader(): XmlReader
-    {
-        return $this->reader;
     }
 }

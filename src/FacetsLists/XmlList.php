@@ -7,4 +7,3 @@ interface XmlList
 {
     function convert(Element $element): array;
 }
-
