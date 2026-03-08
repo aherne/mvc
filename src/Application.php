@@ -12,11 +12,11 @@ use Lucinda\MVC\Facets\RouteInfo;
 /**
  * Detects settings necessary to configure MVC API based on contents of XML file
  */
-class Application
+abstract class Application
 {
     protected XmlReader $reader;
-    
     protected ApplicationInfo $applicationInfo;
+    
     /**
      * @var array<string,RouteInfo>
      */
