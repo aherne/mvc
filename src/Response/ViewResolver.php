@@ -1,7 +1,7 @@
 <?php
 namespace Lucinda\MVC\Response;
 
-interface ViewResolver
+interface ViewResolver extends Resolver
 {
     function resolve(View $view): string;
 }

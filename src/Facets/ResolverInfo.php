@@ -2,7 +2,7 @@
 
 namespace Lucinda\MVC\Facets;
 
-use Lucinda\MVC\Response\ViewResolver;
+use Lucinda\MVC\Response\Resolver;
 use Lucinda\MVC\XmlReader\Element;
 use Lucinda\MVC\XmlReader\Exception;
 
@@ -62,8 +62,8 @@ class ResolverInfo
         if (empty($attributes["class"])) {
             throw new Exception("Attribute 'class' is mandatory for 'resolver' tag");
         }
-        if (!is_subclass_of($attributes["class"], ViewResolver::class)) {
-            throw new Exception($attributes["class"]." must be child of ".ViewResolver::class);
+        if (!is_subclass_of($attributes["class"], Resolver::class)) {
+            throw new Exception($attributes["class"]." must be child of ".Resolver::class);
         }
         $this->viewResolverClass = $attributes["class"];
     }
