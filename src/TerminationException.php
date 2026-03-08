@@ -2,25 +2,16 @@
 
 namespace Lucinda\MVC;
 
-use Lucinda\MVC\Response\Blank as ResponseEmpty;
-use Lucinda\MVC\Response\ByStatus as ResponseByStatus;
-use Lucinda\MVC\Response\Redirect as ResponseRedirect;
-use Lucinda\MVC\Response\Basic as ResponseByBody;
-use Lucinda\MVC\Response\Attachment\File as ResponseByFileAttachment;
-use Lucinda\MVC\Response\Attachment\Partial as ResponseByFilePartialAttachment;
-use Lucinda\MVC\Response\Attachment\Streamed as ResponseByFileStreamedAttachment;
-
-
-final class TerminationException extends \Exception implements Runnable
+final class TerminationException extends \RuntimeException
 {
-    private Runnable $runnable;
+    private Response $response;
 
-    public function __construct(ResponseEmpty|ResponseByStatus|ResponseRedirect|ResponseByBody|ResponseByFileAttachment|ResponseByFilePartialAttachment|ResponseByFileStreamedAttachment $response) {
-        $this->runnable = $response;
+    public function __construct(Response $response) {
+        $this->response = $response;
     }
 
-    public function run(): void
+    public function getResponse(): Response
     {
-        $this->runnable->run();
+        return $this->response;
     }
 }

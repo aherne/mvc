@@ -2,12 +2,13 @@
 
 namespace Lucinda\MVC\Response;
 
+use Lucinda\MVC\Response;
 use Lucinda\MVC\Runnable;
 
 /**
  * Compiles information about a basic string based response
  */
-abstract class Basic implements Runnable
+abstract class Basic implements Runnable, Response
 {
     private ?string $body = null;
 

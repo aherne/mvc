@@ -2,12 +2,13 @@
 
 namespace Lucinda\MVC\Response\Attachment;
 
+use Lucinda\MVC\Response;
 use Lucinda\MVC\Runnable;
 
 /**
  * Models a partial HTTP response attachment (single byte range)
  */
-final class Partial implements Runnable
+final class Partial implements Runnable, Response
 {
     const SUPPORTED_STATUSES = [206, 416];
     private FileToUpload $fileToUpload;
