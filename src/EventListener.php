@@ -4,5 +4,8 @@ namespace Lucinda\MVC;
 
 interface EventListener
 {
-    function run(): Facet|array|null;
+    /**
+     * @return Facet|FacetCollection|null
+     */
+    function run(): Facet|FacetCollection|null;
 }

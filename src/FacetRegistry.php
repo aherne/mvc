@@ -7,17 +7,17 @@ final class FacetRegistry
     /** @var array<class-string, object> */
     private array $facets = [];
     
-    public function put(object $facet): void
+    public function put(Facet $facet): void
     {
         $this->facets[$facet::class] = $facet;
     }
     
-    public function putAs(string $type, object $facet): void
+    public function putAs(string $type, Facet $facet): void
     {
         $this->facets[$type] = $facet; // for interface aliases
     }
     
-    public function get(string $type): object
+    public function get(string $type): Facet
     {
         if (!isset($this->facets[$type])) {
             throw new FacetException("Missing facet: ".$type);
