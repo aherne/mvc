@@ -2,7 +2,7 @@
 
 namespace Lucinda\MVC;
 
-class ReflectionInjector
+final class ReflectionInjector
 {
     private FacetRegistry $facets;
     
