@@ -13,6 +13,14 @@ class View
      */
     private array $data = [];
 
+    public function __construct(array $data, ?string $file = null)
+    {
+        $this->setData($data);
+        if ($file!==null) {
+            $this->setFile($file);
+        }
+    }
+
     /**
      * Sets path to template that will be the foundation of view
      *

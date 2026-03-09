@@ -1,6 +1,7 @@
 <?php
 namespace Lucinda\MVC\Facets;
 
+use Lucinda\MVC\Controller;
 use Lucinda\MVC\XmlReader\Element;
 use Lucinda\MVC\XmlReader\Exception;
 
@@ -54,6 +55,9 @@ class RouteInfo
      */
     protected function setController(array $attributes): void
     {
+        if (!is_subclass_of($attributes["controller"], Controller::class)) {
+            throw new Exception($attributes["controller"]." must be child of ".Controller::class);
+        }
         $this->controller = $attributes["controller"]??"";
     }
 
