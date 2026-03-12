@@ -4,7 +4,7 @@ namespace Lucinda\MVC\FacetsLists;
 use Lucinda\MVC\XmlReader\Element;
 use Lucinda\MVC\XmlReader\Exception;
 
-class ResolversList extends FacetsLists implements XmlList
+final class ResolversList extends FacetsLists implements XmlList
 {
     public function convert(Element $element): array
     {

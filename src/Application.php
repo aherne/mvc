@@ -26,7 +26,11 @@ abstract class Application
      */
     protected array $formats=array();
     
-    
+    /**
+     * Constructs object
+     * 
+     * @param string $xmlFilePath File path to the root XML file
+     */
     public function __construct(string $xmlFilePath)
     {
         $this->reader = new XmlReader($xmlFilePath);

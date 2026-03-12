@@ -3,7 +3,11 @@
 namespace Lucinda\MVC\EventListener;
 
 use Lucinda\MVC\EventListener;
+use Lucinda\MVC\Runnable;
 
-interface UnFaceted extends EventListener
+/**
+ * Requires that the EventListener will return a Runnable
+ */
+interface UnFaceted extends EventListener, Runnable
 {
 }

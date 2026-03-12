@@ -18,6 +18,7 @@ class Redirect implements Response
      * Sets URL to redirect to
      *
      * @param string $location
+     * @param HttpStatus $status
      */
     public function __construct(string $location, HttpStatus $status = HttpStatus::FOUND)
     {

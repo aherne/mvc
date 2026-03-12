@@ -5,12 +5,20 @@ namespace Lucinda\MVC\Response;
 use Lucinda\MVC\Response;
 use Lucinda\MVC\Response\Attachment\Partial;
 
+/**
+ * Implements a HTTP status only response with optional body
+ */
 final class ByStatus implements Response
 {
     private HttpStatus $status;
     protected Headers $headers;
     private string $body = null;
 
+    /**
+     * Sets HTTP status of response
+     * 
+     * @param HttpStatus $status
+     */
     public function __construct(HttpStatus $status)
     {
         if (in_array($status->value, Blank::SUPPORTED_STATUSES)) {
@@ -36,11 +44,19 @@ final class ByStatus implements Response
         $this->headers->add($key, $value);
     }
 
+    /**
+     * Sets custom body to headers-based resonse
+     * 
+     * @param string $body
+     */
     public function setBody(string $body): void
     {
         $this->body = $body;
     }
 
+    /**
+     * Commits response to client.
+     */
     public function run(): void
     {
         http_response_code($this->status->value);

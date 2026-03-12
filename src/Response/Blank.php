@@ -37,6 +37,9 @@ final class Blank implements Response
         $this->headers->add($key, $value);
     }
 
+    /**
+     * Commits response to client.
+     */
     public function run(): void
     {
         http_response_code($this->status->value);

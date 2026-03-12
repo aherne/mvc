@@ -6,10 +6,21 @@ use Lucinda\MVC\EventListener\Faceted;
 use Lucinda\MVC\EventListener\MultiFaceted;
 use Lucinda\MVC\Response\Transformer\Transformer;
 
+/**
+ * Schedules events (but doesn't run them)
+ */
 final class EventScheduler
 {
     private array $events = [];
 
+    /**
+     * Schedules an event
+     * 
+     * @param EventType $eventType
+     * @param string $className
+     * @return void
+     * @throws ConfigurationException If event doesn't pass validation checks
+     */
     public function add(EventType $eventType, string $className): void
     {
         $message = $this->validate($eventType, $className);
@@ -19,6 +30,13 @@ final class EventScheduler
         $this->events[$eventType->value][$className] = $className;
     }
 
+    /**
+     * Validates event before adding
+     * 
+     * @param EventType $eventType
+     * @param string $className
+     * @return ?string Error message if any
+     */
     private function validate(EventType $eventType, string $className): ?string
     {
         if (!class_exists($className)) {
@@ -47,6 +65,12 @@ final class EventScheduler
         return null;
     }
 
+    /**
+     * Gets event listeners scheduled
+     * 
+     * @param EventType $eventType
+     * @return EventListener[]
+     */
     public function get(EventType $eventType): array
     {
         return $this->events[$eventType->value]??[];

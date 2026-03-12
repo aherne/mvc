@@ -2,15 +2,26 @@
 
 namespace Lucinda\MVC;
 
+/**
+ * Implements a Facet constructor injector (for Controller, EventListener and Response\ViewResolver instances)
+ */
 final class ReflectionInjector
 {
     private FacetRegistry $facets;
     
+    /**
+     * Initializes injector with registry
+     * 
+     * @param FacetRegistry $facets
+     */
     public function __construct(FacetRegistry $facets)
     {
         $this->facets = $facets;
     }
     
+    /**
+     * Creates an instance and hydrates it with facets
+     */
     public function create(string $classToInstance): object
     {
         $rc = new \ReflectionClass($classToInstance);

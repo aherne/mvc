@@ -7,7 +7,7 @@ use Lucinda\MVC\Response;
 /**
  * Models a streamed HTTP response attachment
  */
-class Streamed implements Response
+final class Streamed implements Response
 {
     private FileToUpload $fileToUpload;
     private string $filePath;

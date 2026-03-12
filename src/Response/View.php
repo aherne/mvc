@@ -13,6 +13,12 @@ class View
      */
     private array $data = [];
 
+    /**
+     * Constructs view
+     * 
+     * @param array $data
+     * @param ?string $file
+     */
     public function __construct(array $data, ?string $file = null)
     {
         $this->setData($data);

@@ -69,6 +69,11 @@ abstract class Http extends Basic
         parent::run();
     }
 
+    /**
+     * Sends response body back to caller
+     * 
+     * @param string $body
+     */
     protected function emit(string $body): void
     {
         echo $body;
