@@ -3,12 +3,11 @@
 namespace Lucinda\MVC\Response\Attachment;
 
 use Lucinda\MVC\Response;
-use Lucinda\MVC\Runnable;
 
 /**
  * Models a HTTP response attachment
  */
-final class File implements Runnable, Response
+final class File implements Response
 {
     private FileToUpload $fileToUpload;
     private string $filePath;

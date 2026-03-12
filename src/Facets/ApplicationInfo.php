@@ -1,13 +1,16 @@
 <?php
 namespace Lucinda\MVC\Facets;
 
+use Lucinda\MVC\Facet;
 use Lucinda\MVC\XmlReader\Element;
 use Lucinda\MVC\XmlReader\Exception;
 
-class ApplicationInfo
+class ApplicationInfo implements Facet
 {
     protected string $defaultFormat;
     protected string $defaultRoute;
+    protected string $viewsFolder;
+    protected string $viewsExtension;
     protected string $version;
      
     public function __construct(Element $element)
@@ -15,6 +18,8 @@ class ApplicationInfo
         $attributes = $element->getAttributes();
         $this->setDefaultFormat($attributes);
         $this->setDefaultRoute($attributes);
+        $this->viewsFolder = $attributes["views_folder"]??"";
+        $this->viewsExtension = $attributes["views_extension"]??"";
         $this->version = $attributes["version"]??"";
     }
 
@@ -67,14 +72,23 @@ class ApplicationInfo
     }
 
     /**
-     * Sets application version
+     * Gets folder where views are located
      * 
-     * @param array<string,string> $attributes
-     * @throws Exception If XML is misconfigured.
+     * @return string
      */
-    protected function setVersion(array $attributes): void
+    public function getViewsFolder(): string
     {
-        $this->version = $attributes["version"]??"";
+        return $this->viewsFolder;
+    }
+
+    /**
+     * Gets extension of view files
+     * 
+     * @return string
+     */
+    public function getViewsExtension(): string
+    {
+        return $this->viewsExtension;
     }
 
     /**

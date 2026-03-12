@@ -3,12 +3,11 @@
 namespace Lucinda\MVC\Response;
 
 use Lucinda\MVC\Response;
-use Lucinda\MVC\Runnable;
 
 /**
  * Redirects to a new location
  */
-class Redirect implements Runnable, Response
+class Redirect implements Response
 {
     const SUPPORTED_STATUSES = [301, 302, 303, 304, 307, 308];
     private HttpStatus $status;

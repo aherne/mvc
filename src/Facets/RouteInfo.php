@@ -2,6 +2,8 @@
 namespace Lucinda\MVC\Facets;
 
 use Lucinda\MVC\Controller;
+use Lucinda\MVC\Controller\ViewAware;
+use Lucinda\MVC\Controller\ViewUnaware;
 use Lucinda\MVC\XmlReader\Element;
 use Lucinda\MVC\XmlReader\Exception;
 
@@ -55,8 +57,17 @@ class RouteInfo
      */
     protected function setController(array $attributes): void
     {
-        if (!is_subclass_of($attributes["controller"], Controller::class)) {
-            throw new Exception($attributes["controller"]." must be child of ".Controller::class);
+        if (empty($attributes["controller"])) {
+            return;
+        }
+        if (!(
+            is_subclass_of($attributes["controller"], ViewAware::class) || 
+            is_subclass_of($attributes["controller"], ViewUnaware::class)
+            )
+        ) {
+            throw new Exception(
+                $attributes["controller"]." must be ".ViewAware::class." or ".ViewUnaware::class
+            );
         }
         $this->controller = $attributes["controller"]??"";
     }

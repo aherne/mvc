@@ -17,6 +17,11 @@ final class Headers
         $this->headers[$key] = $value;
     }
 
+    public function get(): array
+    {
+        return $this->headers;
+    }
+
     public function send(): void
     {
         foreach ($this->headers as $name=>$value) {

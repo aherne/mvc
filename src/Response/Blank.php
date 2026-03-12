@@ -3,12 +3,11 @@
 namespace Lucinda\MVC\Response;
 
 use Lucinda\MVC\Response;
-use Lucinda\MVC\Runnable;
 
 /**
  * Implements an empty HTTP response (only status and headers)
  */
-final class Blank implements Runnable, Response
+final class Blank implements Response
 {
     const SUPPORTED_STATUSES = [204, 205, 304];
     private HttpStatus $status;

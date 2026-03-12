@@ -4,9 +4,8 @@ namespace Lucinda\MVC\Response;
 
 use Lucinda\MVC\Response;
 use Lucinda\MVC\Response\Attachment\Partial;
-use Lucinda\MVC\Runnable;
 
-final class ByStatus implements Runnable, Response
+final class ByStatus implements Response
 {
     private HttpStatus $status;
     protected Headers $headers;

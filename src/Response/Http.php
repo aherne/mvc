@@ -3,14 +3,21 @@
 namespace Lucinda\MVC\Response;
 
 use Lucinda\MVC\Response\Attachment\Partial;
+use Lucinda\MVC\Response\Transformer\Status as HttpStatusTransformer;
+use Lucinda\MVC\Response\Transformer\Headers as HttpHeadersTransformer;
 
 /**
  * Compiles information about an a basic http response
  */
 abstract class Http extends Basic
 {
-    protected ?HttpStatus $status = null;
-    protected ?Headers $headers = null;
+    private ?HttpStatus $status = null;
+    private ?Headers $headers = null;
+
+    public function __construct()
+    {
+        $this->headers = new Headers();
+    }
 
     /**
      * Sets HTTP response status by its numeric code.
@@ -38,9 +45,6 @@ abstract class Http extends Basic
      */
     public function setHeader(string $key, string|array $value): void
     {
-        if ($this->headers === null) {
-            throw new Exception("Headers not initialized");
-        }
         $this->headers->add($key, $value);
     }
 
@@ -58,10 +62,8 @@ abstract class Http extends Basic
         if ($this->status!==null) {
             http_response_code($this->status->value);
         }
-
-        if ($this->headers!==null) {
-            $this->headers->send();
-        }
+        
+        $this->headers->send();
 
         // displays body
         parent::run();

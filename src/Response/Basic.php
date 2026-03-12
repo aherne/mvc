@@ -3,12 +3,12 @@
 namespace Lucinda\MVC\Response;
 
 use Lucinda\MVC\Response;
-use Lucinda\MVC\Runnable;
+use Lucinda\MVC\Response\Transformer\Body as BodyTransformer;
 
 /**
  * Compiles information about a basic string based response
  */
-abstract class Basic implements Runnable, Response
+abstract class Basic implements Response
 {
     private ?string $body = null;
 
@@ -22,11 +22,12 @@ abstract class Basic implements Runnable, Response
         $this->body = $body;
     }
     
-    public function isAlreadyComposed(): bool
-    {
-        return $this->body!==null;
-    }
-    
+    /**
+     * Resolves view into response body
+     * 
+     * @param View $view
+     * @param ViewResolver $resolver
+     */
     public function resolve(View $view, ViewResolver $resolver): void
     {
         if ($this->body!==null) {
@@ -35,7 +36,12 @@ abstract class Basic implements Runnable, Response
         $this->body = $resolver->resolve($view);
     }
     
-    public function transform(Transformer $transformer): void
+    /**
+     * Applies transformation on response body without exposing the Response object
+     * 
+     * @param BodyTransformer $transformer
+     */
+    public function transformBody(BodyTransformer $transformer): void
     {
         if ($this->body===null) {
             throw new Exception("Response output stream has not been written to");
@@ -53,6 +59,8 @@ abstract class Basic implements Runnable, Response
 
     /**
      * Sends response body back to caller
+     * 
+     * @param string $body
      */
     abstract protected function emit(string $body): void;
 }
