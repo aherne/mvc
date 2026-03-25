@@ -1,6 +1,6 @@
 <?php
 
-namespace Lucinda\STDOUT\Service;
+namespace Lucinda\MVC\Service;
 
 use Lucinda\MVC\ConfigurationException;
 use Lucinda\MVC\Application;
