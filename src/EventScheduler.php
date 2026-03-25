@@ -69,7 +69,7 @@ final class EventScheduler
      * Gets event listeners scheduled
      * 
      * @param EventType $eventType
-     * @return EventListener[]
+     * @return string[]
      */
     public function get(EventType $eventType): array
     {

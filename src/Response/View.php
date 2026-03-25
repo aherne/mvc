@@ -5,7 +5,7 @@ namespace Lucinda\MVC\Response;
 /**
  * Compiles criterias that will be used in generating response body
  */
-class View
+final class View
 {
     private string $file = "";
     /**
