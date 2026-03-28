@@ -5,7 +5,7 @@ namespace Lucinda\MVC\Response\Attachment;
 use Lucinda\MVC\Response;
 
 /**
- * Models a HTTP response attachment
+ * Implements response by file to fully upload
  */
 final class File implements Response
 {

@@ -3,13 +3,15 @@
 namespace Lucinda\MVC\Response\Attachment;
 
 /**
- * Encapsulates logic of a file to upload (attach)
+ * Implements logic of file to upload
  */
 final class FileToUpload
 {
     private string $filePath;
 
     /**
+     * Bootstraps the file verification process
+     * 
      * @param string $filePath Absolute location of file on disk
      */
     public function __construct(string $filePath)

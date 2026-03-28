@@ -5,7 +5,7 @@ namespace Lucinda\MVC\Response\Attachment;
 use Lucinda\MVC\Response;
 
 /**
- * Models a streamed HTTP response attachment
+ * Implements response by file to stream
  */
 final class Streamed implements Response
 {

@@ -6,7 +6,7 @@ use Lucinda\MVC\EventListener;
 use Lucinda\MVC\Facet;
 
 /**
- * Requires that the EventListener will return a Facet
+ * Requires that the EventListener will return a Facet when ran
  */
 interface Faceted extends EventListener
 {

@@ -5,7 +5,7 @@ namespace Lucinda\MVC\Response\Attachment;
 use Lucinda\MVC\Response;
 
 /**
- * Models a partial HTTP response attachment (single byte range)
+ * Implements response by file to partially upload by chunks
  */
 final class Partial implements Response
 {

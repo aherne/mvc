@@ -18,6 +18,7 @@ final class ByStatus implements Response
      * Sets HTTP status of response
      * 
      * @param HttpStatus $status
+     * @throws Exception If HTTP statuses are already covered by separate response classes
      */
     public function __construct(HttpStatus $status)
     {

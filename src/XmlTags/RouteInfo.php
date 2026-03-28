@@ -1,20 +1,28 @@
 <?php
 namespace Lucinda\MVC\XmlTags;
 
-use Lucinda\MVC\Controller;
+use Lucinda\MVC\ConfigurationException;
 use Lucinda\MVC\Controller\ViewAware;
 use Lucinda\MVC\Controller\ViewUnaware;
 use Lucinda\MVC\XmlReader\Element;
 use Lucinda\MVC\XmlReader\Exception;
 
-class RouteInfo
+/**
+ * Detects route information from <route> XML tag
+ */
+class RouteInfo extends XmlElementInfo
 {
     protected string $id;
     protected string $controller;
     protected string $view;
     protected string $format;
     
-    public function __construct(Element $element)
+    /**
+     * Reads <route> XML tag
+     * 
+     * @param Element $element
+     */
+    protected function parse(Element $element): void
     {
         $attributes = $element->getAttributes();
         $this->setID($attributes);
@@ -54,24 +62,20 @@ class RouteInfo
      * Sets controller
      * 
      * @param array<string,string> $attributes
+     * @throws Exception If XML is misconfigured (wrong controller is defined).
      */
     protected function setController(array $attributes): void
     {
         if (empty($attributes["controller"])) {
             return;
         }
-        if (!is_subclass_of($attributes["controller"], Controller::class)) {
-            throw new Exception(
-                $attributes["controller"]." must be ".Controller::class
-            );
-        }
         if (!(
             is_subclass_of($attributes["controller"], ViewAware::class) || 
             is_subclass_of($attributes["controller"], ViewUnaware::class)
             )
         ) {
-            throw new Exception(
-                $attributes["controller"]." must be ".ViewAware::class." or ".ViewUnaware::class
+            throw new ConfigurationException(
+                $attributes["controller"]." must be a child of ".ViewAware::class." or ".ViewUnaware::class
             );
         }
         $this->controller = $attributes["controller"]??"";

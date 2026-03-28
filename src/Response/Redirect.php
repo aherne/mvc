@@ -19,6 +19,7 @@ class Redirect implements Response
      *
      * @param string $location
      * @param HttpStatus $status
+     * @throws Exception If not supported http statuses are used
      */
     public function __construct(string $location, HttpStatus $status = HttpStatus::FOUND)
     {

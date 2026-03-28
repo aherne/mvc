@@ -13,6 +13,12 @@ final class Blank implements Response
     private HttpStatus $status;
     protected Headers $headers;
     
+    /**
+     * Saves http status received
+     * 
+     * @param HttpStatus $status
+     * @throws Exception If not supported HTTP statuses are received
+     */
     public function __construct(HttpStatus $status)
     {
         if (!in_array($status->value, self::SUPPORTED_STATUSES)) {

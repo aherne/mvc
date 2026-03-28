@@ -17,6 +17,7 @@ final class Headers
      * 
      * @param string $key
      * @param string|array $value
+     * @throws Exception If multi-headers are attempted, but they are empty
      */
     public function add(string $key, string|array $value): void
     {

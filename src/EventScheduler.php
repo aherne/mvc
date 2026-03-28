@@ -44,7 +44,7 @@ final class EventScheduler
         }
 
         if (!is_subclass_of($className, EventListener::class)) {
-            return "Class must be a subclass of: ".EventListener::class;
+            return $className." must be a child of: ".EventListener::class;
         }
 
         if (

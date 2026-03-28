@@ -6,7 +6,7 @@ use Lucinda\MVC\Controller;
 use Lucinda\MVC\Response\View;
 
 /**
- * Requires that the outcome of the controller will hydrate a View 
+ * Requires that the outcome of the controller will return a View when ran
  */
 interface ViewAware extends Controller
 {

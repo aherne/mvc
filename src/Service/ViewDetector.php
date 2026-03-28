@@ -7,10 +7,20 @@ use Lucinda\MVC\ConfigurationException;
 use Lucinda\MVC\Application;
 use Lucinda\MVC\RequestValidator;
 
+/**
+ * Compiles final view by binding Application, RequestValidator and optional controller-derived View objects
+ */
 final class ViewDetector
 {
     private View $view;
     
+    /**
+     * Bootstraps the compilation process
+     * 
+     * @param Application $application
+     * @param RequestValidator $validatedRequest
+     * @param ?View $filledView
+     */
     public function __construct(
         Application $application,
         RequestValidator $validatedRequest,
@@ -23,6 +33,15 @@ final class ViewDetector
         );
     }
 
+    /**
+     * Detects location of view template file, if any
+     * 
+     * @param Application $application
+     * @param RequestValidator $validatedRequest
+     * @param ?View $filledView
+     * @return ?string
+     * @throws ConfigurationException If application is wrongly configured
+     */
     private function getTemplate(
         Application $application,
         RequestValidator $validatedRequest,
@@ -51,6 +70,11 @@ final class ViewDetector
         return $fullViewPath;
     }
 
+    /**
+     * Gets view detected
+     * 
+     * @return View
+     */
     public function getView(): View
     {
         return $this->view;

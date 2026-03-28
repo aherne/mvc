@@ -12,8 +12,11 @@ use Lucinda\MVC\Response\Transformer\Headers as HttpHeadersTransformer;
 abstract class Http extends Basic
 {
     private ?HttpStatus $status = null;
-    private ?Headers $headers = null;
+    private Headers $headers;
 
+    /**
+     * Prepares response headers
+     */
     public function __construct()
     {
         $this->headers = new Headers();

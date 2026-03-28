@@ -5,7 +5,10 @@ use Lucinda\MVC\Facet;
 use Lucinda\MVC\XmlReader\Element;
 use Lucinda\MVC\XmlReader\Exception;
 
-class ApplicationInfo implements Facet
+/**
+ * Detects application information from <application> XML tag
+ */
+class ApplicationInfo extends XmlElementInfo implements Facet
 {
     protected string $defaultFormat;
     protected string $defaultRoute;
@@ -13,7 +16,12 @@ class ApplicationInfo implements Facet
     protected string $viewsExtension;
     protected string $version;
      
-    public function __construct(Element $element)
+    /**
+     * Reads <application> XML tag
+     * 
+     * @param Element $element
+     */
+    protected function parse(Element $element): void
     {
         $attributes = $element->getAttributes();
         $this->setDefaultFormat($attributes);

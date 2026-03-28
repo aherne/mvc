@@ -2,24 +2,25 @@
 
 namespace Lucinda\MVC\XmlTags;
 
+use Lucinda\MVC\ConfigurationException;
 use Lucinda\MVC\Response\Resolver;
 use Lucinda\MVC\XmlReader\Element;
 use Lucinda\MVC\XmlReader\Exception;
 
 /**
- * Encapsulates file format information:
- * - format: file format / name
- * - view resolver: (optional) view resolver class name. If not set, framework will resolve into an empty view with headers only.
-    * - content type: content type that corresponds to above file format
-    * - character encoding: charset associated to content type
+ * Detects view resolver information from <resolver> XML tag
  */
-class ResolverInfo
+class ResolverInfo extends XmlElementInfo
 {
     protected string $format;
     protected string $viewResolverClass;
     
-    
-    public function __construct(Element $element)
+    /**
+     * Reads <resolver> XML tag
+     * 
+     * @param Element $element
+     */
+    protected function parse(Element $element): void
     {
         $attributes = $element->getAttributes();
         $this->setFormat($attributes);
@@ -63,7 +64,7 @@ class ResolverInfo
             throw new Exception("Attribute 'class' is mandatory for 'resolver' tag");
         }
         if (!is_subclass_of($attributes["class"], Resolver::class)) {
-            throw new Exception($attributes["class"]." must be child of ".Resolver::class);
+            throw new ConfigurationException($attributes["class"]." must be child of ".Resolver::class);
         }
         $this->viewResolverClass = $attributes["class"];
     }

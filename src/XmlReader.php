@@ -4,6 +4,9 @@ namespace Lucinda\MVC;
 use Lucinda\MVC\XmlReader\Element;
 use Lucinda\MVC\XmlReader\Exception as XMLException;
 
+/**
+ * Reads main XML tree
+ */
 final class XmlReader
 {
 
@@ -61,7 +64,11 @@ final class XmlReader
         return new Element($returningXML);
     }
     
-    
+    /**
+     * Checks if main XML has a tag
+     * 
+     * @return bool
+     */
     public function hasTag(string $name): bool
     {
         $xml = $this->simpleXMLElement->{$name};

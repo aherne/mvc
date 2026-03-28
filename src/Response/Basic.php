@@ -27,6 +27,7 @@ abstract class Basic implements Response
      * 
      * @param View $view
      * @param ViewResolver $resolver
+     * @throws Exception If response could not be compiled due to a logical error
      */
     public function resolve(View $view, ViewResolver $resolver): void
     {
@@ -40,6 +41,7 @@ abstract class Basic implements Response
      * Applies transformation on response body without exposing the Response object
      * 
      * @param BodyTransformer $transformer
+     * @throws Exception If response could not be compiled due to a logical error
      */
     public function transformBody(BodyTransformer $transformer): void
     {
