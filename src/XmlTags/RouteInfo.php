@@ -1,5 +1,5 @@
 <?php
-namespace Lucinda\MVC\Facets;
+namespace Lucinda\MVC\XmlTags;
 
 use Lucinda\MVC\Controller;
 use Lucinda\MVC\Controller\ViewAware;
@@ -59,6 +59,11 @@ class RouteInfo
     {
         if (empty($attributes["controller"])) {
             return;
+        }
+        if (!is_subclass_of($attributes["controller"], Controller::class)) {
+            throw new Exception(
+                $attributes["controller"]." must be ".Controller::class
+            );
         }
         if (!(
             is_subclass_of($attributes["controller"], ViewAware::class) || 

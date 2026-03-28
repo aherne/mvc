@@ -3,11 +3,11 @@
 namespace Lucinda\MVC;
 
 use Lucinda\MVC\XmlReader\Exception as XmlException;
-use Lucinda\MVC\FacetsLists\ResolversList;
-use Lucinda\MVC\FacetsLists\RoutesList;
-use Lucinda\MVC\Facets\ApplicationInfo;
-use Lucinda\MVC\Facets\ResolverInfo;
-use Lucinda\MVC\Facets\RouteInfo;
+use Lucinda\MVC\XmlTagsLists\ResolversList;
+use Lucinda\MVC\XmlTagsLists\RoutesList;
+use Lucinda\MVC\XmlTags\ApplicationInfo;
+use Lucinda\MVC\XmlTags\ResolverInfo;
+use Lucinda\MVC\XmlTags\RouteInfo;
 
 /**
  * Detects settings necessary to configure MVC API based on contents of XML file

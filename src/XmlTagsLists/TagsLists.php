@@ -1,10 +1,7 @@
 <?php
-namespace Lucinda\MVC\FacetsLists;
+namespace Lucinda\MVC\XmlTagsLists;
 
-use Lucinda\MVC\XmlReader\Element;
-use Lucinda\MVC\XmlReader\Exception;
-
-abstract class FacetsLists
+abstract class TagsLists
 {
     protected string $facetClass;
 

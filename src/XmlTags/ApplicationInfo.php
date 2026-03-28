@@ -1,5 +1,5 @@
 <?php
-namespace Lucinda\MVC\Facets;
+namespace Lucinda\MVC\XmlTags;
 
 use Lucinda\MVC\Facet;
 use Lucinda\MVC\XmlReader\Element;

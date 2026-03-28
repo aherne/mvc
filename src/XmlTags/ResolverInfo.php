@@ -1,6 +1,6 @@
 <?php
 
-namespace Lucinda\MVC\Facets;
+namespace Lucinda\MVC\XmlTags;
 
 use Lucinda\MVC\Response\Resolver;
 use Lucinda\MVC\XmlReader\Element;

@@ -1,22 +1,22 @@
 <?php
-namespace Lucinda\MVC\FacetsLists;
+namespace Lucinda\MVC\XmlTagsLists;
 
 use Lucinda\MVC\XmlReader\Element;
 use Lucinda\MVC\XmlReader\Exception;
 
-final class RoutesList extends FacetsLists implements XmlList
+final class ResolversList extends TagsLists implements XmlList
 {
     public function convert(Element $element): array
     {
         $output = [];
         $list = $element->getChildren();
-        if (empty($list["route"])) {
-            throw new Exception("At least one 'route' tag is mandatory for 'routes' children");
+        if (empty($list["resolver"])) {
+            throw new Exception("At least one 'resolver' tag is mandatory for 'resolvers' children");
         }
         $facetClass = $this->facetClass;
-        foreach ($list["route"] as $info) {
+        foreach ($list["resolver"] as $info) {
             $info = new $facetClass($element);
-            $output[$info->getID()] = $info;
+            $output[$info->getFormat()] = $info;
         }
         return $output;
     }
