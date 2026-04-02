@@ -9,7 +9,7 @@ use Lucinda\MVC\Response\Transformer\Headers as HttpHeadersTransformer;
 /**
  * Compiles information about an a basic http response
  */
-abstract class Http extends Basic
+final class Http extends Basic
 {
     private ?HttpStatus $status = null;
     private Headers $headers;

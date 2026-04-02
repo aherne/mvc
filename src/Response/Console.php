@@ -5,24 +5,23 @@ namespace Lucinda\MVC\Response;
 /**
  * Implements a response expected to be displayed in a console / terminal
  */
-abstract class Console extends Basic
+final class Console extends Basic
 {
-    private ?int $exitCode = null;
-    private ?string $errorBody = null;
+    private int $exitCode;
+    /**
+     * @var resource
+     */
+    private $stream = STDOUT;
 
     /**
-     * Sets exit code
-     * 
-     * @param int $exitCode
+     * Prepares console response
      */
-    public function setExitCode(int $exitCode): void
+    public function __construct(int $exitCode = 0, $stream = STDOUT)
     {
-        if ($exitCode < 0 || $exitCode > 255) {
-            throw new Exception("Invalid exit code: ".$exitCode);
-        }
         $this->exitCode = $exitCode;
+        $this->stream = $stream;
     }
-
+    
     /**
      * Gets exit code set
      */
@@ -32,27 +31,12 @@ abstract class Console extends Basic
     }
 
     /**
-     * Sets response body to show in STDERR stream
-     *
-     * @param string $body
-     */
-    public function setErrorBody(string $errorBody): void
-    {
-        $this->errorBody = $errorBody;
-    }
-
-    /**
      * Sends response body back to caller
      * 
      * @param string $body
      */
     protected function emit(string $body): void
     {
-        if ($body) {
-            fwrite(STDOUT, $body);
-        }
-        if ($this->errorBody) {
-            fwrite(STDERR, $this->errorBody);
-        }
+        fwrite($this->stream, $body);
     }
 }
