@@ -12,7 +12,7 @@ use Lucinda\MVC\RequestValidator;
  */
 final class ViewDetector
 {
-    private View $view;
+    private ?View $view = null;
     
     /**
      * Bootstraps the compilation process
@@ -27,9 +27,13 @@ final class ViewDetector
         ?View $filledView
     )
     {
+        $template = $this->getTemplate($application, $validatedRequest, $filledView);
+        if ($template === null && $filledView === null) {
+            return;
+        }
         $this->view = new View(
             $filledView?->getData() ?? [],
-            $this->getTemplate($application, $validatedRequest, $filledView)
+            $template
         );
     }
 
@@ -75,7 +79,7 @@ final class ViewDetector
      * 
      * @return View
      */
-    public function getView(): View
+    public function getView(): ?View
     {
         return $this->view;
     }
