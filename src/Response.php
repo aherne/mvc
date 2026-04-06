@@ -68,7 +68,7 @@ class Response
      * @param  string|null $value
      * @return string|array<string,string>|null
      */
-    public function headers(string $key="", string $value=null): string|array|null
+    public function headers(string $key="", ?string $value=null): string|array|null
     {
         if (!$key) {
             return $this->headers;
