@@ -25,7 +25,7 @@ final class ResolversList extends TagsLists implements XmlList
         }
         $facetClass = $this->tagClass;
         foreach ($list["resolver"] as $info) {
-            $info = new $facetClass($element);
+            $info = new $facetClass($info);
             $output[$info->getFormat()] = $info;
         }
         return $output;

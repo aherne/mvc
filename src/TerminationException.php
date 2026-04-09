@@ -18,7 +18,7 @@ final class TerminationException extends \RuntimeException
      */
     public function __construct(Response $response) {
         if ($response instanceof Basic) {
-            throw new ConfigurationException("Basic responses should not be terminated abruptly!")
+            throw new ConfigurationException("Basic responses should not be terminated abruptly!");
         }
         $this->response = $response;
     }

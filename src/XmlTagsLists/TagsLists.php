@@ -18,9 +18,8 @@ abstract class TagsLists
     public function __construct(string $tagClass)
     {
         $expectedBaseClass = $this->getChildTagBaseClass();
-        if (!is_subclass_of($tagClass, $expectedBaseClass)) {
-            
-            throw new ConfigurationException($tagClass." must be a child of ".$expectedBaseClass::class);
+        if ($tagClass !== $expectedBaseClass && !is_subclass_of($tagClass, $expectedBaseClass)) {
+            throw new ConfigurationException($tagClass." must be a child of ".$expectedBaseClass);
         }
         $this->tagClass = $tagClass;
     }

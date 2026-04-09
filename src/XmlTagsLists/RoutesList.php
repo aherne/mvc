@@ -25,7 +25,7 @@ final class RoutesList extends TagsLists implements XmlList
         }
         $facetClass = $this->tagClass;
         foreach ($list["route"] as $info) {
-            $info = new $facetClass($element);
+            $info = new $facetClass($info);
             $output[$info->getID()] = $info;
         }
         return $output;

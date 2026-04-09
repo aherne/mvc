@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<xml>
+  <resolvers>
+    <resolver format="json" class="Test\Lucinda\MVC\Support\DemoViewResolver"/>
+  </resolvers>
+</xml>

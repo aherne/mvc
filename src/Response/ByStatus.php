@@ -12,7 +12,7 @@ final class ByStatus implements Response
 {
     private HttpStatus $status;
     protected Headers $headers;
-    private string $body = null;
+    private ?string $body = null;
 
     /**
      * Sets HTTP status of response

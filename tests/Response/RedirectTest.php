@@ -3,33 +3,29 @@
 namespace Test\Lucinda\MVC\Response;
 
 use Lucinda\MVC\Response\Redirect;
-use Lucinda\UnitTest\Result;
+use Lucinda\UnitTest\Validator\Booleans;
+use Lucinda\UnitTest\Validator\Strings;
+use Test\Lucinda\MVC\Support\TestHelper;
 
 class RedirectTest
 {
-    private Redirect $redirect;
-
-    public function __construct()
-    {
-        $this->redirect = new Redirect("https://www.google.com");
-    }
-
-    public function setPermanent()
-    {
-        $this->redirect->setPermanent(true);
-        return new Result(true);
-    }
-
-
     public function setPreventCaching()
     {
-        $this->redirect->setPreventCaching(true);
-        return new Result(true);
+        $response = new Redirect("https://www.google.com");
+        $response->setPreventCaching(true);
+        $reflection = new \ReflectionProperty($response, "preventCaching");
+        return new Booleans($reflection->getValue($response))->assertTrue();
     }
-
 
     public function run()
     {
-        return new Result(false, "Redirection cannot be unit tested");
+        $result = TestHelper::runPhp(
+            '(new \Lucinda\MVC\Response\Redirect("https://www.google.com"))->run();'
+        );
+
+        return [
+            (new Strings((string) $result["status"]))->assertEquals("0"),
+            (new Strings($result["output"]))->assertEmpty()
+        ];
     }
 }
